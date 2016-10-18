@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        
+	<!-- Mock factories -->
+	<bean class="com.ilm.api.factory.MockFactoryPerson" id="mockFactoryPersonApi" />
+
+	
+    <!-- Create mock of services -->
+	<bean factory-bean="mockFactoryPersonApi" factory-method="createMapper" id="mapper"/>
+	<bean factory-bean="mockFactoryPersonApi" factory-method="createPersonService" id="personService"/>
+	
+   	<!-- Scanner le package com.orange.activ.api.service.cef est exclure les API qui ne sont pas concerné par ce test U --> 
+	
+	<context:component-scan base-package="com.ilm.api">
+    	<!-- Exclure toute les Apis sauf celle mentionné dans le pattern -->
+		<context:exclude-filter expression="^(?!com\.ilm\.api\.PersonApi$).*" type="regex" />
+	</context:component-scan>
+	
+</beans>
